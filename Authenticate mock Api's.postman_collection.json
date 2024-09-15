@@ -1,0 +1,831 @@
+{
+	"info": {
+		"_postman_id": "de1a72d9-9b9b-4882-8eb8-504fd39da062",
+		"name": "Authenticate mock Api's",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29628270"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is within an acceptable range\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});",
+							"",
+							"",
+							"pm.test(\"User response has the required field - userAccessCode\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.have.property('userAccessCode');",
+							"});",
+							"",
+							"",
+							"pm.test(\"UserAccessCode is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.userAccessCode).to.be.a('string').and.to.have.lengthOf.at.least(1, \"UserAccessCode should be a non-empty string\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"// Stores the userAccessCode in an environment or global variable",
+							"var userAccessCode = pm.response.json().userAccessCode;",
+							"pm.globals.set(\"userAccessCode\", userAccessCode);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"firstName\": \"Manjunath\",\n  \"lastName\": \"Gowda\",\n  \"dob\": \"01-12-1999\",\n  \"email\": \"thevairu@gmail.com\",\n  \"phone\": \"6360452353\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-v3.authenticating.com/mock/user/create",
+					"protocol": "https",
+					"host": [
+						"api-v3",
+						"authenticating",
+						"com"
+					],
+					"path": [
+						"mock",
+						"user",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"  const responseData = pm.response.json();",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.success).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Success field is a boolean value\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.success).to.be.a('boolean');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userAccessCode\": \"{{userAccessCode}}\",\n  \"firstName\": \"Manjunath\",\n  \"lastName\": \"Gowda\",\n  \"dob\": \"01-12-1999\",\n  \"houseNumber\": 196,\n  \"streetName\": \"1st cross\",\n  \"address\": \"bagalagunte , Nagasandra\",\n  \"city\": \"Bangalore\",\n  \"state\": \"Karnataka\",\n  \"zipCode\": \"560073\",\n  \"ssn\": \"2773\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-v3.authenticating.com/mock/user/update",
+					"protocol": "https",
+					"host": [
+						"api-v3",
+						"authenticating",
+						"com"
+					],
+					"path": [
+						"mock",
+						"user",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Phone",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userAccessCode\": \"2d91a19f-d07b-48f0-912f-886ed67009dd\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-v3.authenticating.com/mock/user/verifyPhone",
+					"protocol": "https",
+					"host": [
+						"api-v3",
+						"authenticating",
+						"com"
+					],
+					"path": [
+						"mock",
+						"user",
+						"verifyPhone"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Phone Code",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is within an acceptable range\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Success field exists in the response\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.success).to.exist;",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userAccessCode\": \"{{userAccessCode}}\",\n  \"code\": \"91\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-v3.authenticating.com/mock/user/verifyPhoneCode",
+					"protocol": "https",
+					"host": [
+						"api-v3",
+						"authenticating",
+						"com"
+					],
+					"path": [
+						"mock",
+						"user",
+						"verifyPhoneCode"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"pm.test(\"Success field is a boolean value\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.success).to.be.a('boolean');",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userAccessCode\": \"{{userAccessCode}}\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-v3.authenticating.com/mock/user/verifyEmail",
+					"protocol": "https",
+					"host": [
+						"api-v3",
+						"authenticating",
+						"com"
+					],
+					"path": [
+						"mock",
+						"user",
+						"verifyEmail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Email Code",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Success field exists and has the correct value type\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.success).to.exist.and.to.be.a('boolean');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userAccessCode\": \"{{userAccessCode}}\",\n  \"code\": \"1234\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-v3.authenticating.com/mock/user/verifyEmailCode",
+					"protocol": "https",
+					"host": [
+						"api-v3",
+						"authenticating",
+						"com"
+					],
+					"path": [
+						"mock",
+						"user",
+						"verifyEmailCode"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify score inputs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.address).to.exist;",
+							"    pm.expect(responseData.city).to.exist;",
+							"    pm.expect(responseData.region).to.exist;",
+							"    pm.expect(responseData.country).to.exist;",
+							"    pm.expect(responseData.postalCode).to.exist;",
+							"    pm.expect(responseData.givenName).to.exist;",
+							"    pm.expect(responseData.familyName).to.exist;",
+							"    pm.expect(responseData.phone).to.exist;",
+							"    pm.expect(responseData.email).to.exist;",
+							"    pm.expect(responseData.risk).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"household\");",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n  \"userAccessCode\": \"2d91a19f-d07b-48f0-912f-886ed67009dd\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-v3.authenticating.com/mock/identity/scoreInputs",
+					"protocol": "https",
+					"host": [
+						"api-v3",
+						"authenticating",
+						"com"
+					],
+					"path": [
+						"mock",
+						"identity",
+						"scoreInputs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mock criminal federal records",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - success and uniqueIdentifier\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('success');",
+							"    pm.expect(responseData).to.have.property('uniqueIdentifier');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Success field is a boolean\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.success).to.be.a('boolean');",
+							"});",
+							"",
+							"",
+							"pm.test(\"UniqueIdentifier field is a non-empty string\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.uniqueIdentifier).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n  \"userAccessCode\": \"{{userAccessCode}}\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-v3.authenticating.com/mock/user/verify/criminal/federal",
+					"protocol": "https",
+					"host": [
+						"api-v3",
+						"authenticating",
+						"com"
+					],
+					"path": [
+						"mock",
+						"user",
+						"verify",
+						"criminal",
+						"federal"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mock Emplyment verification",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 300ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate the 'employment' array in the response\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.employment).to.be.an('array').and.to.have.lengthOf.at.least(1);",
+							"    responseData.employment.forEach(function(employmentData) {",
+							"        pm.expect(employmentData).to.be.an('object');",
+							"        pm.expect(employmentData.employerNameVerified).to.be.a('boolean');",
+							"        pm.expect(employmentData.jobTitleVerified).to.be.a('boolean');",
+							"        pm.expect(employmentData.startDateVerified).to.be.a('boolean');",
+							"        pm.expect(employmentData.endDateVerified).to.be.a('boolean');",
+							"        pm.expect(employmentData.currentlyEmployed).to.be.a('boolean');",
+							"        pm.expect(employmentData.manualVerification).to.be.a('boolean');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Each 'employment' object has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.employment).to.be.an('array').that.is.not.empty;",
+							"",
+							"    responseData.employment.forEach(function (employment) {",
+							"        pm.expect(employment).to.have.property('clientUUID').that.is.a('string');",
+							"        pm.expect(employment).to.have.property('uuid').that.is.a('string');",
+							"        pm.expect(employment).to.have.property('employerName').that.is.a('string');",
+							"        pm.expect(employment).to.have.property('employerNameVerified').that.is.a('boolean');",
+							"        pm.expect(employment).to.have.property('jobTitle').that.is.a('string');",
+							"        pm.expect(employment).to.have.property('jobTitleVerified').that.is.a('boolean');",
+							"        pm.expect(employment).to.have.property('startDate').that.is.a('string');",
+							"        pm.expect(employment).to.have.property('startDateVerified').that.is.a('boolean');",
+							"        pm.expect(employment).to.have.property('endDate').that.is.a('string');",
+							"        pm.expect(employment).to.have.property('endDateVerified').that.is.a('boolean');",
+							"        pm.expect(employment).to.have.property('currentlyEmployed').that.is.a('boolean');",
+							"        pm.expect(employment).to.have.property('manualVerification').that.is.a('boolean');",
+							"        pm.expect(employment).to.have.property('status').that.is.a('string');",
+							"        pm.expect(employment).to.have.property('message').that.is.a('string');",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n  \"employmentList\": [\n    {\n      \"employerName\": \"Manjunath Gowda\",\n      \"jobTitle\": \"QA engineer\",\n      \"startDate\": \"01-12-2024\",\n      \"currentlyEmployed\": true,\n      \"manualVerification\": true\n    }\n  ],\n  \"userAccessCode\": \"100385a1-4308-49db-889f-9a898fa88c21\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-v3.authenticating.com/mock/employment/v2/verify",
+					"protocol": "https",
+					"host": [
+						"api-v3",
+						"authenticating",
+						"com"
+					],
+					"path": [
+						"mock",
+						"employment",
+						"v2",
+						"verify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mock Upload ID Neative test failed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n  \"userAccessCode\": \"100385a1-4308-49db-889f-9a898fa88c21\",\n  \"idFront\": \"ss\",\n  \"idBack\": \"ss\"\n  //\"country\":\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-v3.authenticating.com/mock/identity/document/scan/",
+					"protocol": "https",
+					"host": [
+						"api-v3",
+						"authenticating",
+						"com"
+					],
+					"path": [
+						"mock",
+						"identity",
+						"document",
+						"scan",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
